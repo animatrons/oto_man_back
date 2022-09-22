@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Auto extends AEntity {
     @Override
     public String getTableName() {
-        return "Auto";
+        return "auto";
     }
 
     private String name;

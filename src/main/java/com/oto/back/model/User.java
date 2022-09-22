@@ -12,7 +12,7 @@ import lombok.Setter;
 public class User extends AEntity {
     @Override
     public String getTableName() {
-        return "User";
+        return "user_";
     }
 
     private String firstName;

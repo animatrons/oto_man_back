@@ -14,7 +14,7 @@ import java.util.Date;
 public class Ride extends AEntity {
     @Override
     public String getTableName() {
-        return "Ride";
+        return "ride";
     }
 
     private Date start;
