@@ -42,9 +42,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
     public String getParametrizedInsertQuery(T entity) throws IllegalAccessException {
         Map<String, Object> propsMap = getNonNullFields(entity);
         var table = entity.getTableName();
-        String query = """
-                INSERT INTO
-                """;
+        String query = "";
         int count = 0;
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
         for (Map.Entry<String, Object> keyValue: entrySet) {
@@ -112,25 +110,28 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             var type = field.getType();
             var setter = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
             var instanceOfFieldType = type.getConstructor().newInstance();
+            if (instanceOfFieldType instanceof String) {
+                instance.getClass().getMethod(setter, String.class).invoke(instance, rs.getString(name));
+            } else
             if (instanceOfFieldType instanceof Integer) {
-                instance.getClass().getMethod(setter).invoke(rs.getInt(name));
+                instance.getClass().getMethod(setter, Integer.class).invoke(instance, rs.getInt(name));
             } else
             if (instanceOfFieldType instanceof Boolean) {
-                instance.getClass().getMethod(setter).invoke(rs.getBoolean(name));
+                instance.getClass().getMethod(setter, Boolean.class).invoke(instance, rs.getBoolean(name));
             } else
             if (instanceOfFieldType instanceof Date) {
-                instance.getClass().getMethod(setter).invoke(rs.getDate(name));
+                instance.getClass().getMethod(setter, Date.class).invoke(instance, rs.getDate(name));
             } else
             if (instanceOfFieldType instanceof Long) {
-                instance.getClass().getMethod(setter).invoke(rs.getLong(name));
+                instance.getClass().getMethod(setter, Long.class).invoke(instance, rs.getLong(name));
             } else
             if (instanceOfFieldType instanceof Float) {
-                instance.getClass().getMethod(setter).invoke(rs.getFloat(name));
+                instance.getClass().getMethod(setter, Float.class).invoke(instance, rs.getFloat(name));
             } else {
-                throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported");
+                throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported, filed is: " + name + " type: " + instanceOfFieldType);
             }
         }
-        instance.setId(rs.getString("id"));
+        instance.setId(rs.getInt("id"));
         return instance;
     }
 }

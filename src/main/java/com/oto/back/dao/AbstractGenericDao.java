@@ -30,13 +30,9 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             var cTor = this.clazz.getConstructor();
             T instance = cTor.newInstance();
             var table = instance.getTableName();
-            var sql = """
-                SELECT *
-                FROM ?
-                WHERE id = ?;
-                """;
+            var sql = "SELECT * FROM " + table + " WHERE id = ?;";
             AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
-            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper, table, id)
+            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper, Integer.parseInt(id))
                     .stream()
                     .findFirst();
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
@@ -51,12 +47,9 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             var cTor = this.clazz.getConstructor();
             T instance = cTor.newInstance();
             var table = instance.getTableName();
-            var sql = """
-                SELECT *
-                FROM ?;
-                """;
+            var sql = "SELECT * FROM " + table +";";
             AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
-            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper, table);
+            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
                  ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -86,12 +79,9 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             var cTor = this.clazz.getConstructor();
             T instance = cTor.newInstance();
             var table = instance.getTableName();
-            var sql = """
-                DELETE FROM ?
-                WHERE id = ?;
-                """;
+            var sql = "DELETE FROM " + table + " WHERE id = ?;";
             AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
-            return jdbcTemplate.update(sql, (RowMapper<T>) rowMapper, table, id);
+            return jdbcTemplate.update(sql, (RowMapper<T>) rowMapper, Integer.parseInt(id));
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
                  ClassNotFoundException e) {
             throw new RuntimeException(e);

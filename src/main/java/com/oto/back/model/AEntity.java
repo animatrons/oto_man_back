@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 public abstract class AEntity {
 
-    private String id;
+    private Integer id;
     private Date createdAt;
     private Date updatedAt;
     private String code;

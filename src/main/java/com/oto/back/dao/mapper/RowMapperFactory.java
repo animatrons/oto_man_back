@@ -10,7 +10,7 @@ public class RowMapperFactory {
 
     public static AbstractRowMapper<? extends AEntity> getRowMapper(String table) throws ClassNotFoundException {
         switch (table) {
-            case "user" -> {
+            case "user_" -> {
                 return new UserRowMapper();
             }
             case "rider" -> {
@@ -23,7 +23,7 @@ public class RowMapperFactory {
                 return new AutoRowMapper();
             }
             default -> {
-                throw new ClassNotFoundException();
+                throw new ClassNotFoundException(" [[ OH NO ]] Not table with such name, so no mapper");
             }
         }
     }
