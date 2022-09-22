@@ -24,13 +24,16 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return fields;
     }
 
-    private Map<String, Object> getNonNullFields(T entity) throws IllegalAccessException {
+    private Map<String, Object> getNonNullFields(T entity) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Map<String, Object> objectsMap = new HashMap<>();
         Field[] fields = getFields();
+
         for (Field field: fields) {
-            Object obj = field.get(entity);
+            var name = field.getName();
+            var getter = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
+            Object obj = this.clazz.getMethod(getter).invoke(entity);
             Optional.ofNullable(obj).ifPresent(obj_ -> {
-                objectsMap.put(field.getName(), obj_);
+                objectsMap.put(name, obj_);
             });
         }
         if (entity.getId() != null) {
@@ -39,7 +42,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return objectsMap;
     }
 
-    public String getParametrizedInsertQuery(T entity) throws IllegalAccessException {
+    public String getParametrizedInsertQuery(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Map<String, Object> propsMap = getNonNullFields(entity);
         var table = entity.getTableName();
         String query = "";
@@ -48,8 +51,8 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         for (Map.Entry<String, Object> keyValue: entrySet) {
             String key = keyValue.getKey();
             if (count == 0) query += "INSERT INTO " + table + " (";
+            query += key + ( count + 1 >= entrySet.size() ? ")" : ",");
             count++;
-            query += key + ( count + 1 == entrySet.size() ? ")" : ",");
         }
         query += " VALUES (";
         for (int i = 0; i<count; i++) {
@@ -58,7 +61,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return query;
     }
 
-    public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException {
+    public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         List<Object> objects = new ArrayList<Object>();
         Map<String, Object> propsMap = getNonNullFields(entity);
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
@@ -69,7 +72,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return objects.toArray();
     }
 
-    public int[] getTypes(T entity) throws IllegalAccessException, NoSuchFieldException {
+    public int[] getTypes(T entity) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException {
         List<Integer> types = new ArrayList<>();
         Map<String, Object> propsMap = getNonNullFields(entity);
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
