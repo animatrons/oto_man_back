@@ -4,9 +4,11 @@ import com.oto.back.dao.IRideDao;
 import com.oto.back.model.Ride;
 import com.oto.back.model.exception.NotFoundException;
 import com.oto.back.service.IRideService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RideService implements IRideService {
     private final IRideDao rideDao;
 

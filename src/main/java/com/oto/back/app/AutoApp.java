@@ -2,7 +2,7 @@ package com.oto.back.app;
 
 import com.oto.back.model.Auto;
 import com.oto.back.model.dto.AutoDto;
-import com.oto.back.model.mapper.AutoMapperImpl;
+import com.oto.back.app.mapper.AutoMapperImpl;
 import com.oto.back.service.IAutoService;
 import org.springframework.stereotype.Service;
 

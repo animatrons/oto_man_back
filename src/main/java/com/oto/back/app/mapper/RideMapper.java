@@ -1,21 +1,26 @@
 package com.oto.back.app.mapper;
 
+import com.oto.back.app.AutoApp;
 import com.oto.back.app.RiderApp;
-import com.oto.back.app.UserApp;
 import com.oto.back.model.Ride;
-import com.oto.back.model.dto.ADto;
 import com.oto.back.model.dto.RideDto;
 import com.oto.back.model.dto.RiderDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface RideMapper extends IMapper<Ride, RideDto> {
+public abstract class RideMapper implements IMapper<Ride, RideDto> {
     RiderMapper INSTANCE = Mappers.getMapper(RiderMapper.class);
+
+    @Autowired
+    protected RiderApp riderApp;
+    @Autowired
+    protected AutoApp autoApp;
 
     @Override
     @Mapping(source = "rider", target = "riderId", qualifiedByName = "dtoToId")
-    Ride toEntity(RideDto dto);
+    public abstract Ride toEntity(RideDto dto);
 
     @Named("dtoToId")
     static String dtoToId(RiderDto riderDto) {
@@ -23,11 +28,8 @@ public interface RideMapper extends IMapper<Ride, RideDto> {
     }
 
     @Override
-    @Mapping(source = "riderId", target = "rider", qualifiedByName = "idToDto")
-    RideDto toDto(Ride entity);
+    @Mapping(target = "rider", expression = "java(riderApp.get(entity.getRiderId()))")
+    @Mapping(target = "auto", expression = "java(autoApp.get(entity.getAutoId()))")
+    public abstract RideDto toDto(Ride entity);
 
-    @Named("idToDto")
-    static RiderDto idToDto(String riderId, @Context RiderApp riderApp) {
-        return riderApp.get(riderId);
-    }
 }

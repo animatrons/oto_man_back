@@ -2,7 +2,7 @@ package com.oto.back.app;
 
 import com.oto.back.model.Ride;
 import com.oto.back.model.dto.RideDto;
-import com.oto.back.model.mapper.RideMapperImpl;
+import com.oto.back.app.mapper.RideMapperImpl;
 import com.oto.back.service.IRideService;
 import org.springframework.stereotype.Service;
 

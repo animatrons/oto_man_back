@@ -2,7 +2,7 @@ package com.oto.back.app;
 
 import com.oto.back.model.Rider;
 import com.oto.back.model.dto.RiderDto;
-import com.oto.back.model.mapper.RiderMapperImpl;
+import com.oto.back.app.mapper.RiderMapperImpl;
 import com.oto.back.service.IRiderService;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package com.oto.back.app;
 
 import com.oto.back.model.User;
 import com.oto.back.model.dto.UserDto;
-import com.oto.back.model.mapper.UserMapperImpl;
+import com.oto.back.app.mapper.UserMapperImpl;
 import com.oto.back.service.IUserService;
 import org.springframework.stereotype.Service;
 
