@@ -17,10 +17,15 @@ public class Ride extends AEntity {
         return "ride";
     }
 
+    @Override
+    public String getForeignKeyName() {
+        return "";
+    }
+
     private Date start;
     private Date checkIn;
-    private String riderId;
-    private String autoId;
+    private String riderId; // foreign key of Rider table
+    private String autoId; // foreign key of Auto table
     private String comment;
     private long miles;
 }

@@ -15,6 +15,11 @@ public class User extends AEntity {
         return "user_";
     }
 
+    @Override
+    public String getForeignKeyName() {
+        return "";
+    }
+
     private String firstName;
     private String lastName;
     private String email;

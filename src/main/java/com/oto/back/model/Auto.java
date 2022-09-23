@@ -15,6 +15,11 @@ public class Auto extends AEntity {
         return "auto";
     }
 
+    @Override
+    public String getForeignKeyName() {
+        return "";
+    }
+
     private String name;
     private String brand;
     private String model;

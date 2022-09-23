@@ -95,6 +95,10 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             } else
             if (v instanceof Date) {
                 types.add(Types.DATE);
+            } else
+            if (v instanceof AEntity) {
+                throw new UnsupportedOperationException("[[ OH NO ]]  AEntity type mapping is not implemented here. " +
+                        "We agreed it should be done by the dto to entity mappers in the app layer, entities should not contain other entities.");
             } else {
                 throw new NoSuchFieldException("[[ OH NO ]]  this type is not supported for this field");
             }

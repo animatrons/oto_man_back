@@ -11,8 +11,8 @@ public class RideDto extends ADto {
 
     private Date start;
     private Date checkIn;
-    private String riderId;
-    private String autoId;
+    private RiderDto rider; // map to riderId in entity
+    private AutoDto auto; // map to autoId in entity
     private String comment;
     private long miles;
 

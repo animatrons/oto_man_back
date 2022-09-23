@@ -16,4 +16,5 @@ public abstract class AEntity {
     private String label;
 
     public abstract String getTableName();
+    public abstract String getForeignKeyName();
 }

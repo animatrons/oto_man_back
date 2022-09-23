@@ -17,6 +17,11 @@ public class Rider extends AEntity {
         return "rider";
     }
 
+    @Override
+    public String getForeignKeyName() {
+        return "";
+    }
+
     private String firstName;
     private String lastName;
     private String email;

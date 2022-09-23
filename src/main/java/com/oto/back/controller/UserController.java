@@ -1,7 +1,8 @@
 package com.oto.back.controller;
 
+import com.oto.back.app.UserApp;
 import com.oto.back.model.User;
-import com.oto.back.service.UserService;
+import com.oto.back.service.impl.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,23 +11,23 @@ import java.util.List;
 @RequestMapping(path = "/auth/api/users")
 public class UserController {
 
-    private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private final UserApp userApp;
+    public UserController(UserApp userApp) {
+        this.userApp = userApp;
     }
 
     @GetMapping
     public List<User> getAll() {
-        return userService.getAll();
+        return userApp.getAll();
     }
 
     @GetMapping("{id}")
     public User get(@PathVariable("id") String id) {
-        return userService.get(id);
+        return userApp.get(id);
     }
 
     @PostMapping
     public void add(@RequestBody User user) {
-        userService.add(user);
+        userApp.add(user);
     }
 }
