@@ -1,6 +1,7 @@
 package com.oto.back.app;
 
 import com.oto.back.model.Rider;
+import com.oto.back.model.dto.RiderDto;
 import com.oto.back.model.mapper.RiderMapperImpl;
 import com.oto.back.service.IRiderService;
 import org.springframework.stereotype.Service;
@@ -16,23 +17,25 @@ public class RiderApp {
     }
     RiderMapperImpl riderMapper = new RiderMapperImpl();
 
-    public Rider get(String id) {
-        return riderService.get(id);
+    public RiderDto get(String id) {
+        Rider rider = riderService.get(id);
+        return riderMapper.toDto(rider);
     }
 
     public void delete(String id) {
         riderService.delete(id);
     }
 
-    public List<Rider> getAll() {
-        return riderService.getAll();
+    public List<RiderDto> getAll() {
+        List<Rider> riders = riderService.getAll();
+        return riderMapper.toDtos(riders);
     }
 
-    public void add(Rider rider) {
-        riderService.add(rider);
+    public void add(RiderDto riderDto) {
+        riderService.add(riderMapper.toEntity(riderDto));
     }
 
-    public void update(Rider rider) {
-        riderService.update(rider);
+    public void update(RiderDto riderDto) {
+        riderService.update(riderMapper.toEntity(riderDto));
     }
 }

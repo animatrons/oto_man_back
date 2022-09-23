@@ -1,4 +1,4 @@
-package com.oto.back.config;
+package com.oto.back.dao.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

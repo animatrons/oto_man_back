@@ -1,6 +1,7 @@
 package com.oto.back.app;
 
 import com.oto.back.model.User;
+import com.oto.back.model.dto.UserDto;
 import com.oto.back.model.mapper.UserMapperImpl;
 import com.oto.back.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -16,23 +17,25 @@ public class UserApp {
     }
     UserMapperImpl userMapper = new UserMapperImpl();
 
-    public User get(String id) {
-        return userService.get(id);
+    public UserDto get(String id) {
+        User user = userService.get(id);
+        return userMapper.toDto(user);
     }
 
     public void delete(String id) {
         userService.delete(id);
     }
 
-    public List<User> getAll() {
-        return userService.getAll();
+    public List<UserDto> getAll() {
+        List<User> users = userService.getAll();
+        return userMapper.toDtos(users);
     }
 
-    public void add(User user) {
-        userService.add(user);
+    public void add(UserDto userDto) {
+        userService.add(userMapper.toEntity(userDto));
     }
 
-    public void update(User user) {
-        userService.update(user);
+    public void update(UserDto userDto) {
+        userService.update(userMapper.toEntity(userDto));
     }
 }

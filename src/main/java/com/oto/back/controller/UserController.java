@@ -2,6 +2,7 @@ package com.oto.back.controller;
 
 import com.oto.back.app.UserApp;
 import com.oto.back.model.User;
+import com.oto.back.model.dto.UserDto;
 import com.oto.back.service.impl.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,17 +18,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserDto> getAll() {
         return userApp.getAll();
     }
 
     @GetMapping("{id}")
-    public User get(@PathVariable("id") String id) {
+    public UserDto get(@PathVariable("id") String id) {
         return userApp.get(id);
     }
 
     @PostMapping
-    public void add(@RequestBody User user) {
-        userApp.add(user);
+    public void add(@RequestBody UserDto userDto) {
+        userApp.add(userDto);
     }
 }

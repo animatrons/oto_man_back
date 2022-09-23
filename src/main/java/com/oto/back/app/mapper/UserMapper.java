@@ -1,4 +1,4 @@
-package com.oto.back.model.mapper;
+package com.oto.back.app.mapper;
 
 import com.oto.back.model.User;
 import com.oto.back.model.dto.UserDto;
