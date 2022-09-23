@@ -1,6 +1,5 @@
 # oto_man_back
 
-----------------
 **Required:** Java 17, Docker-compose
 ## To run the app
 
