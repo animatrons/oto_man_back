@@ -2,12 +2,11 @@ package com.oto.back.controller;
 
 import com.oto.back.app.RideApp;
 import com.oto.back.model.dto.RideDto;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path = "/auth/api/rides")
 public class RideController {
 
@@ -29,5 +28,10 @@ public class RideController {
     @PostMapping
     public void add(@RequestBody RideDto rideDto) {
         rideApp.add(rideDto);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable("id") String id) {
+        rideApp.delete(id);
     }
 }

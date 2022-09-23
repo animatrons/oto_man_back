@@ -14,7 +14,7 @@ public class RideDto extends ADto {
     private RiderDto rider; // map to riderId in entity
     private AutoDto auto; // map to autoId in entity
     private String comment;
-    private long miles;
+    private Long miles;
 
     @Override
     boolean validate() {

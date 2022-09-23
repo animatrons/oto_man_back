@@ -80,10 +80,8 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             T instance = cTor.newInstance();
             var table = instance.getTableName();
             var sql = "DELETE FROM " + table + " WHERE id = ?;";
-            AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
-            return jdbcTemplate.update(sql, (RowMapper<T>) rowMapper, Integer.parseInt(id));
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException |
-                 ClassNotFoundException e) {
+            return jdbcTemplate.update(sql, Integer.parseInt(id));
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

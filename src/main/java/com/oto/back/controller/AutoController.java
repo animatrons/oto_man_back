@@ -2,12 +2,11 @@ package com.oto.back.controller;
 
 import com.oto.back.app.AutoApp;
 import com.oto.back.model.dto.AutoDto;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path = "/auth/api/autos")
 public class AutoController {
     private final AutoApp autoApp;
@@ -28,5 +27,10 @@ public class AutoController {
     @PostMapping
     public void add(@RequestBody AutoDto autoDto) {
         autoApp.add(autoDto);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable("id") String id) {
+        autoApp.delete(id);
     }
 }

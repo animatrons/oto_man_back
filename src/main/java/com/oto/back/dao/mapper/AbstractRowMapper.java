@@ -94,11 +94,11 @@ public abstract class AbstractRowMapper<T extends AEntity> {
                 types.add(Types.BOOLEAN);
             } else
             if (v instanceof Date) {
-                types.add(Types.DATE);
+                types.add(Types.TIMESTAMP_WITH_TIMEZONE);
             } else
             if (v instanceof AEntity) {
                 throw new UnsupportedOperationException("[[ OH NO ]]  AEntity type mapping is not implemented here. " +
-                        "We agreed it should be done by the dto to entity mappers in the app layer, entities should not contain other entities.");
+                        "We agreed it should be done by the dto-entity mappers in the app layer, entities should not contain other entities.");
             } else {
                 throw new NoSuchFieldException("[[ OH NO ]]  this type is not supported for this field");
             }
@@ -116,26 +116,26 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             var name = field.getName();
             var type = field.getType();
             var setter = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-            var instanceOfFieldType = type.getConstructor().newInstance();
-            if (instanceOfFieldType instanceof String) {
+            var typeName = type.getCanonicalName();
+            if (typeName.equals(String.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, String.class).invoke(instance, rs.getString(name));
             } else
-            if (instanceOfFieldType instanceof Integer) {
+            if (typeName.equals(Integer.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, Integer.class).invoke(instance, rs.getInt(name));
             } else
-            if (instanceOfFieldType instanceof Boolean) {
+            if (typeName.equals(Boolean.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, Boolean.class).invoke(instance, rs.getBoolean(name));
             } else
-            if (instanceOfFieldType instanceof Date) {
-                instance.getClass().getMethod(setter, Date.class).invoke(instance, rs.getDate(name));
+            if (typeName.equals(Date.class.getCanonicalName())) {
+                instance.getClass().getMethod(setter, Date.class).invoke(instance, rs.getTimestamp(name));
             } else
-            if (instanceOfFieldType instanceof Long) {
+            if (typeName.equals(Long.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, Long.class).invoke(instance, rs.getLong(name));
             } else
-            if (instanceOfFieldType instanceof Float) {
+            if (typeName.equals(Float.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, Float.class).invoke(instance, rs.getFloat(name));
             } else {
-                throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported, filed is: " + name + " type: " + instanceOfFieldType);
+                throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported, filed is: " + name + " type: " + typeName);
             }
         }
         instance.setId(rs.getInt("id"));

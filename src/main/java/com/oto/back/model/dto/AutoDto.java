@@ -10,9 +10,9 @@ public class AutoDto extends ADto {
     private String brand;
     private String model;
     private String year;
-    private String vClass;
-    private String vType;
-    private long mileage;
+    private String vclass;
+    private String vtype;
+    private Long mileage;
 
     @Override
     boolean validate() {

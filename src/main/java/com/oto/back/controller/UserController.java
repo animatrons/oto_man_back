@@ -1,9 +1,7 @@
 package com.oto.back.controller;
 
 import com.oto.back.app.UserApp;
-import com.oto.back.model.User;
 import com.oto.back.model.dto.UserDto;
-import com.oto.back.service.impl.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,5 +28,10 @@ public class UserController {
     @PostMapping
     public void add(@RequestBody UserDto userDto) {
         userApp.add(userDto);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable("id") String id) {
+        userApp.delete(id);
     }
 }

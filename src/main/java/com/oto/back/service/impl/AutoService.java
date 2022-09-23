@@ -18,6 +18,7 @@ public class AutoService implements IAutoService {
 
     @Override
     public Auto get(String id) {
+        var auto = new Auto();
         return autoDao.find(id).orElseThrow(() -> new NotFoundException(String.format("Auto with id %s not found", id)));
     }
 

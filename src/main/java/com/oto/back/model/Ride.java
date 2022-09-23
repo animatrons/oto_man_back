@@ -27,5 +27,5 @@ public class Ride extends AEntity {
     private String riderId; // foreign key of Rider table
     private String autoId; // foreign key of Auto table
     private String comment;
-    private long miles;
+    private Long miles;
 }

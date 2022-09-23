@@ -32,7 +32,8 @@ public class AutoApp {
     }
 
     public void add(AutoDto autoDto) {
-        autoService.add(autoMapper.toEntity(autoDto));
+        var auto = autoMapper.toEntity(autoDto);
+        autoService.add(auto);
     }
 
     public void update(AutoDto autoDto) {

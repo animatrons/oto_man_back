@@ -21,10 +21,11 @@ public class Auto extends AEntity {
     }
 
     private String name;
+    // TODO: make brand an entity and reference it here with foreign keu
     private String brand;
     private String model;
     private String year;
-    private String vClass;
-    private String vType;
-    private long mileage;
+    private String vclass;
+    private String vtype;
+    private Long mileage;
 }
