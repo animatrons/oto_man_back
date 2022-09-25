@@ -35,7 +35,7 @@ public class UserApp {
         userService.add(userMapper.toEntity(userDto));
     }
 
-    public void update(UserDto userDto) {
-        userService.update(userMapper.toEntity(userDto));
+    public void update(String id, UserDto userDto) {
+        userService.update(id, userMapper.toEntity(userDto));
     }
 }

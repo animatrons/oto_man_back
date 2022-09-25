@@ -5,10 +5,10 @@ import com.oto.back.model.User;
 
 import java.util.List;
 
-public interface IBaseService<T extends AEntity> {
+public interface IBaseGenericService<T extends AEntity> {
     T get(String id);
     List<T> getAll();
     void add(T entity);
-    void update(T entity);
+    void update(String id, T entity);
     void delete(String id);
 }

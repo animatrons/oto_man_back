@@ -36,7 +36,7 @@ public class AutoApp {
         autoService.add(auto);
     }
 
-    public void update(AutoDto autoDto) {
-        autoService.update(autoMapper.toEntity(autoDto));
+    public void update(String id, AutoDto autoDto) {
+        autoService.update(id, autoMapper.toEntity(autoDto));
     }
 }

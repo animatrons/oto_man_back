@@ -4,5 +4,5 @@ import com.oto.back.model.User;
 
 import java.util.List;
 
-public interface IUserService extends IBaseService<User> {
+public interface IUserService extends IBaseGenericService<User> {
 }

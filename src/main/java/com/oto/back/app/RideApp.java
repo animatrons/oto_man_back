@@ -35,7 +35,7 @@ public class RideApp {
         rideService.add(rideMapper.toEntity(rideDto));
     }
 
-    public void update(RideDto rideDto) {
-        rideService.update(rideMapper.toEntity(rideDto));
+    public void update(String id, RideDto rideDto) {
+        rideService.update(id, rideMapper.toEntity(rideDto));
     }
 }
