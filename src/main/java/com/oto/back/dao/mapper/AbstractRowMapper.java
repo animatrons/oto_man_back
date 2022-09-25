@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class AbstractRowMapper<T extends AEntity> {
     protected final Class<T> clazz;
@@ -45,20 +44,46 @@ public abstract class AbstractRowMapper<T extends AEntity> {
     public String getParametrizedInsertQuery(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Map<String, Object> propsMap = getNonNullFields(entity);
         var table = entity.getTableName();
-        String query = "";
+        StringBuilder query = new StringBuilder();
         int count = 0;
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
         for (Map.Entry<String, Object> keyValue: entrySet) {
             String key = keyValue.getKey();
-            if (count == 0) query += "INSERT INTO " + table + " (";
-            query += key + ( count + 1 >= entrySet.size() ? ")" : ",");
+            if (count == 0) query.append("INSERT INTO ").append(table).append(" (");
+            query.append(key).append(count + 1 >= entrySet.size() ? ")" : ",");
             count++;
         }
-        query += " VALUES (";
+        query.append(" VALUES (");
         for (int i = 0; i<count; i++) {
-            query += "?" + (i + 1 == count ? ");" : " ,");
+            query.append("?").append(i + 1 == count ? ");" : " ,");
         }
-        return query;
+        return query.toString();
+    }
+
+    public String getUpdateQuery(String id, T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Map<String, Object> propsMap = getNonNullFields(entity);
+        var table = entity.getTableName();
+        StringBuilder queryLeft = new StringBuilder();
+        StringBuilder queryRight = new StringBuilder();
+        int count = 0;
+        Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
+        for (Map.Entry<String, Object> keyValue: entrySet) {
+            String key = keyValue.getKey();
+            Object value = keyValue.getValue();
+            if (value instanceof String) {
+                value = "'" + value + "'";
+            }
+            if (count == 0) {
+                queryLeft.append("UPDATE ").append(table).append(" SET (");
+                queryRight.append(" = (");
+            }
+            queryLeft.append(key).append(count + 1 >= entrySet.size() ? ") " : ",");
+            queryRight.append(value).append(count + 1 >= entrySet.size() ? ") " : ",");
+            count++;
+        }
+        queryRight.append(" WHERE id = ").append(id).append(" ;");
+        queryLeft.append(queryRight);
+        return queryLeft.toString();
     }
 
     public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {

@@ -11,4 +11,6 @@ public interface IGenericDao<T extends AEntity> {
     List<T> findAll();
     int insert(T entity);
     int delete(String id);
+    int update(String id, T entity);
+    String getTableName();
 }
