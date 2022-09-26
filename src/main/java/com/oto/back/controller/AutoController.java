@@ -33,4 +33,10 @@ public class AutoController {
     public void delete(@PathVariable("id") String id) {
         autoApp.delete(id);
     }
+
+    @PutMapping
+    public void update(@RequestParam("id") String id, @RequestBody AutoDto autoDto) {
+        autoApp.update(id, autoDto);
+    }
+
 }

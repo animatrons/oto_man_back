@@ -1,6 +1,7 @@
 package com.oto.back.controller;
 
 import com.oto.back.app.RideApp;
+import com.oto.back.model.dto.AutoDto;
 import com.oto.back.model.dto.RideDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,10 @@ public class RideController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") String id) {
         rideApp.delete(id);
+    }
+
+    @PutMapping
+    public void update(@RequestParam("id") String id, @RequestBody RideDto rideDto) {
+        rideApp.update(id, rideDto);
     }
 }
