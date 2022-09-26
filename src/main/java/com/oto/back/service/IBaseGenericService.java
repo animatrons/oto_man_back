@@ -2,6 +2,7 @@ package com.oto.back.service;
 
 import com.oto.back.model.AEntity;
 import com.oto.back.model.User;
+import com.oto.back.model.exception.TechnicalException;
 
 import java.util.List;
 

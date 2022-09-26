@@ -28,8 +28,8 @@ public abstract class RideMapper implements IMapper<Ride, RideDto> {
     }
 
     @Override
-    @Mapping(target = "rider", expression = "java(riderApp.get(entity.getRiderId()))")
-    @Mapping(target = "auto", expression = "java(autoApp.get(entity.getAutoId()))")
+    @Mapping(target = "rider", expression = "java(riderApp.getDtoForMapper(entity.getRiderId()))")
+    @Mapping(target = "auto", expression = "java(autoApp.getDtoForMapper(entity.getAutoId()))")
     public abstract RideDto toDto(Ride entity);
 
 }

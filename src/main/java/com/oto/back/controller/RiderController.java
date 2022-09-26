@@ -1,6 +1,7 @@
 package com.oto.back.controller;
 
 import com.oto.back.app.RiderApp;
+import com.oto.back.model.dto.ResponseDto;
 import com.oto.back.model.dto.RideDto;
 import com.oto.back.model.dto.RiderDto;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +17,28 @@ public class RiderController {
     }
 
     @GetMapping
-    public List<RiderDto> getAll() {
+    public ResponseDto<List<RiderDto>> getAll() {
         return riderApp.getAll();
     }
 
     @GetMapping("{id}")
-    public RiderDto get(@PathVariable("id") String id) {
+    public ResponseDto<RiderDto> get(@PathVariable("id") String id) {
         return riderApp.get(id);
     }
 
     @PostMapping
-    public void add(@RequestBody RiderDto riderDto) {
-        riderApp.add(riderDto);
+    public ResponseDto<RiderDto> add(@RequestBody RiderDto riderDto) {
+        return riderApp.add(riderDto);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") String id) {
-        riderApp.delete(id);
+    public ResponseDto<RiderDto> delete(@PathVariable("id") String id) {
+        return riderApp.delete(id);
     }
 
     @PutMapping
-    public void update(@RequestParam("id") String id, @RequestBody RiderDto riderDto) {
-        riderApp.update(id, riderDto);
+    public ResponseDto<RiderDto> update(@RequestParam("id") String id, @RequestBody RiderDto riderDto) {
+        return riderApp.update(id, riderDto);
     }
 
 }

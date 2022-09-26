@@ -1,8 +1,11 @@
 package com.oto.back.app;
 
 import com.oto.back.model.Auto;
+import com.oto.back.model.Rider;
 import com.oto.back.model.dto.AutoDto;
 import com.oto.back.app.mapper.AutoMapperImpl;
+import com.oto.back.model.dto.ResponseDto;
+import com.oto.back.model.dto.RiderDto;
 import com.oto.back.service.IAutoService;
 import org.springframework.stereotype.Service;
 
@@ -17,26 +20,41 @@ public class AutoApp {
     }
     AutoMapperImpl autoMapper = new AutoMapperImpl();
 
-    public AutoDto get(String id) {
+    public ResponseDto<AutoDto> get(String id) {
+        Auto auto = autoService.get(id);
+        var autoDto = autoMapper.toDto(auto);
+        return new ResponseDto<>(autoDto, 200, "OK");
+    }
+
+    public ResponseDto<AutoDto> delete(String id) {
+        autoService.delete(id);
+        return new ResponseDto<>(null, 200, "DELETED");
+    }
+
+    public ResponseDto<List<AutoDto>> getAll() {
+        List<Auto> autos = autoService.getAll();
+        return new ResponseDto<>(autoMapper.toDtos(autos), 200, "OK");
+    }
+
+    public ResponseDto<AutoDto> add(AutoDto autoDto) {
+        var auto = autoMapper.toEntity(autoDto);
+        return new ResponseDto<>(autoDto, 200, "ADDED");
+    }
+
+    public ResponseDto<AutoDto> update(String id, AutoDto autoDto) {
+        autoService.update(id, autoMapper.toEntity(autoDto));
+        return new ResponseDto<>(null, 200, "DELETED");
+    }
+
+    /**
+     * Used only in mapper, provided in expression of the mapping to convert id in entity to it's corresponding DTO in mapped dto.
+     * DO NOT CHANGE OR TOUCH, MAPPER WILL BREAK
+     *
+     * @param id id
+     * @return dto
+     */
+    public AutoDto getDtoForMapper(String id) {
         Auto auto = autoService.get(id);
         return autoMapper.toDto(auto);
-    }
-
-    public void delete(String id) {
-        autoService.delete(id);
-    }
-
-    public List<AutoDto> getAll() {
-        List<Auto> autos = autoService.getAll();
-        return autoMapper.toDtos(autos);
-    }
-
-    public void add(AutoDto autoDto) {
-        var auto = autoMapper.toEntity(autoDto);
-        autoService.add(auto);
-    }
-
-    public void update(String id, AutoDto autoDto) {
-        autoService.update(id, autoMapper.toEntity(autoDto));
     }
 }

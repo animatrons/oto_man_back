@@ -2,6 +2,7 @@ package com.oto.back.controller;
 
 import com.oto.back.app.AutoApp;
 import com.oto.back.model.dto.AutoDto;
+import com.oto.back.model.dto.ResponseDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,28 +16,28 @@ public class AutoController {
     }
 
     @GetMapping
-    public List<AutoDto> getAll() {
+    public ResponseDto<List<AutoDto>> getAll() {
         return autoApp.getAll();
     }
 
     @GetMapping("{id}")
-    public AutoDto get(@PathVariable("id") String id) {
+    public ResponseDto<AutoDto> get(@PathVariable("id") String id) {
         return autoApp.get(id);
     }
 
     @PostMapping
-    public void add(@RequestBody AutoDto autoDto) {
-        autoApp.add(autoDto);
+    public ResponseDto<AutoDto> add(@RequestBody AutoDto autoDto) {
+        return autoApp.add(autoDto);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") String id) {
-        autoApp.delete(id);
+    public ResponseDto<AutoDto> delete(@PathVariable("id") String id) {
+        return autoApp.delete(id);
     }
 
     @PutMapping
-    public void update(@RequestParam("id") String id, @RequestBody AutoDto autoDto) {
-        autoApp.update(id, autoDto);
+    public ResponseDto<AutoDto> update(@RequestParam("id") String id, @RequestBody AutoDto autoDto) {
+        return autoApp.update(id, autoDto);
     }
 
 }

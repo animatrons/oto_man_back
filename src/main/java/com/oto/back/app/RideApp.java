@@ -1,6 +1,7 @@
 package com.oto.back.app;
 
 import com.oto.back.model.Ride;
+import com.oto.back.model.dto.ResponseDto;
 import com.oto.back.model.dto.RideDto;
 import com.oto.back.app.mapper.RideMapperImpl;
 import com.oto.back.service.IRideService;
@@ -17,25 +18,28 @@ public class RideApp {
     }
     RideMapperImpl rideMapper = new RideMapperImpl();
 
-    public RideDto get(String id) {
+    public ResponseDto<RideDto> get(String id) {
         Ride ride = rideService.get(id);
-        return rideMapper.toDto(ride);
+        return new ResponseDto<>(rideMapper.toDto(ride), 200, "OK");
     }
 
-    public void delete(String id) {
+    public ResponseDto<RideDto> delete(String id) {
         rideService.delete(id);
+        return new ResponseDto<>(null, 200, "DELETED");
     }
 
-    public List<RideDto> getAll() {
+    public ResponseDto<List<RideDto>> getAll() {
         List<Ride> rides = rideService.getAll();
-        return rideMapper.toDtos(rides);
+        return new ResponseDto<>(rideMapper.toDtos(rides), 200, "OK");
     }
 
-    public void add(RideDto rideDto) {
+    public ResponseDto<RideDto> add(RideDto rideDto) {
         rideService.add(rideMapper.toEntity(rideDto));
+        return new ResponseDto<>(rideDto, 200, "ADDED");
     }
 
-    public void update(String id, RideDto rideDto) {
+    public ResponseDto<RideDto> update(String id, RideDto rideDto) {
         rideService.update(id, rideMapper.toEntity(rideDto));
+        return new ResponseDto<>(rideDto, 200, "UPDATED");
     }
 }
