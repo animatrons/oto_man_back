@@ -1,9 +1,11 @@
 package com.oto.back.dao.mapper;
 
+import com.oto.back.dao.util.ArraySqlValue;
 import com.oto.back.model.AEntity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -39,6 +41,18 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             objectsMap.put("id", entity.getId());
         }
         return objectsMap;
+    }
+
+    private Class<?> getGenericTypeOfField(String fName) throws NoSuchFieldException {
+        Field[] fields = getFields();
+        Class<?> aClass = Arrays.stream(fields).filter(f -> f.getName().equals(fName))
+                .findFirst()
+                .map(f -> {
+                    ParameterizedType genericType = (ParameterizedType) f.getGenericType();
+                    Class<?> typeArgument = (Class<?>) genericType.getActualTypeArguments()[0];
+                    return typeArgument;
+                }).orElseThrow(() -> new NoSuchFieldException("[[ OH NO ]]  FILED NOT FOUND!!!!"));
+        return aClass;
     }
 
     public String getParametrizedInsertQuery(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -86,12 +100,21 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return queryLeft.toString();
     }
 
-    public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         List<Object> objects = new ArrayList<Object>();
         Map<String, Object> propsMap = getNonNullFields(entity);
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
         for (Map.Entry<String, Object> keyValue: entrySet) {
             var v = keyValue.getValue();
+            var k = keyValue.getKey();
+            if (v instanceof List<?>) {
+                Class<?> aClass = getGenericTypeOfField(k);
+                v = ArraySqlValue.create(((List<?>) v).toArray(), aClass);
+            }
+            if (v instanceof Set<?>) {
+                Class<?> aClass = getGenericTypeOfField(k);
+                v = ArraySqlValue.create(((Set<?>) v).toArray(), aClass);
+            }
             objects.add(v);
         }
         return objects.toArray();
@@ -120,6 +143,9 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             } else
             if (v instanceof Date) {
                 types.add(Types.TIMESTAMP_WITH_TIMEZONE);
+            } else
+            if (v instanceof List<?> || v instanceof Set<?>) {
+                types.add(Types.ARRAY);
             } else
             if (v instanceof AEntity) {
                 throw new UnsupportedOperationException("[[ OH NO ]]  AEntity type mapping is not implemented here. " +

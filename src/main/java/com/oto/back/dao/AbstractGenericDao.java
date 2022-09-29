@@ -89,7 +89,7 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             int[] types = rowMapper.getTypes(entity);
             return jdbcTemplate.update(sql, args, types);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
-                 ClassNotFoundException | NoSuchFieldException e) {
+                 ClassNotFoundException | NoSuchFieldException | InstantiationException e) {
             log.error(e.getMessage(), e);
             throw new TechnicalException(e.getMessage());
         }

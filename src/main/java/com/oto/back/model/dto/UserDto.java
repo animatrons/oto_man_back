@@ -6,11 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto extends ADto {
+
+    private String userName;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private String role;
+    private String[] role;
 
     @Override
     boolean validate() {
