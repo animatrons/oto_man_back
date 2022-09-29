@@ -27,6 +27,11 @@ public class UserController {
         return userApp.get(id);
     }
 
+    @GetMapping("user")
+    public ResponseDto<UserDto> getBy(@RequestParam("email") String email) {
+        return userApp.getByEmailAddress(email);
+    }
+
     @PostMapping
     public ResponseDto<UserDto> add(@RequestBody UserDto userDto) {
         return userApp.add(userDto);

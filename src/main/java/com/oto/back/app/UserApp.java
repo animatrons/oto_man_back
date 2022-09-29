@@ -4,6 +4,7 @@ import com.oto.back.model.User;
 import com.oto.back.model.dto.ResponseDto;
 import com.oto.back.model.dto.UserDto;
 import com.oto.back.app.mapper.UserMapperImpl;
+import com.oto.back.model.exception.NotFoundException;
 import com.oto.back.service.IUserService;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,15 @@ public class UserApp {
     public ResponseDto<UserDto> get(String id) {
         User user = userService.get(id);
         return new ResponseDto<>(userMapper.toDto(user), 200, "OK");
+    }
+
+    public ResponseDto<UserDto> getByEmailAddress(String email) {
+        UserDto dto = userService.getBy("email", email)
+                .stream()
+                .findFirst()
+                .map(user -> userMapper.toDto(user))
+                .orElseThrow(() -> new NotFoundException(String.format("User with Email address '%s' NOT found, OK?", email)));
+        return new ResponseDto<>(dto, 200, "OK");
     }
 
     public ResponseDto<UserDto> delete(String id) {

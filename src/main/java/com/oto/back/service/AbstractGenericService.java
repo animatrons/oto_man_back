@@ -15,6 +15,15 @@ public abstract class AbstractGenericService<T extends AEntity, U extends IGener
     protected U dao = null;
 
     @Override
+    public List<T> getBy(String property, Object value) {
+        try {
+            return dao.findBy(property, value);
+        } catch (TechnicalException e) {
+            throw new InternalServerException(e.getMessage());
+        }
+    }
+
+    @Override
     public T get(String id) {
         try {
             String table = dao.getTableName();
