@@ -69,7 +69,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         }
         query.append(" VALUES (");
         for (int i = 0; i<count; i++) {
-            query.append("?").append(i + 1 == count ? ");" : " ,");
+            query.append("?").append(i + 1 == count ? ") RETURNING id;" : " ,");
         }
         return query.toString();
     }
@@ -87,6 +87,21 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             if (value instanceof String) {
                 value = "'" + value + "'";
             }
+            if (value instanceof List<?> || value instanceof Set<?>) {
+                StringBuilder arrStr = new StringBuilder();
+                arrStr.append("ARRAY [");
+                ((Collection<?>) value).forEach(v -> {
+                    String item;
+                    if (v instanceof String) {
+                        item = "'" + v + "'";
+                    } else {
+                         item = v.toString();
+                    }
+                    arrStr.append(item).append(" ,");
+                });
+                arrStr.deleteCharAt(arrStr.length() - 1).append("]");
+                value = arrStr.toString();
+            }
             if (count == 0) {
                 queryLeft.append("UPDATE ").append(table).append(" SET (");
                 queryRight.append(" = (");
@@ -100,7 +115,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return queryLeft.toString();
     }
 
-    public Object[] getNonNullValueProperties(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
+    public Object[] getNonNullMembersValues(T entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         List<Object> objects = new ArrayList<Object>();
         Map<String, Object> propsMap = getNonNullFields(entity);
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
@@ -120,7 +135,7 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         return objects.toArray();
     }
 
-    public int[] getTypes(T entity) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException {
+    public int[] getNonNullMembersTypes(T entity) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException {
         List<Integer> types = new ArrayList<>();
         Map<String, Object> propsMap = getNonNullFields(entity);
         Set<Map.Entry<String, Object>> entrySet = propsMap.entrySet();
@@ -185,6 +200,12 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             } else
             if (typeName.equals(Float.class.getCanonicalName())) {
                 instance.getClass().getMethod(setter, Float.class).invoke(instance, rs.getFloat(name));
+            } else
+            if (typeName.equals(List.class.getCanonicalName())) {
+                instance.getClass().getMethod(setter, List.class).invoke(instance, Collections.singletonList(rs.getArray(name)));
+            } else
+            if (typeName.equals(Set.class.getCanonicalName())) {
+                instance.getClass().getMethod(setter, Set.class).invoke(instance, new HashSet<>(Collections.singletonList(rs.getArray(name))));
             } else {
                 throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported, filed is: " + name + " type: " + typeName);
             }

@@ -23,7 +23,7 @@ public abstract class RideMapper implements IMapper<Ride, RideDto> {
     public abstract Ride toEntity(RideDto dto);
 
     @Named("dtoToId")
-    static String dtoToId(RiderDto riderDto) {
+    static Integer dtoToId(RiderDto riderDto) {
         return riderDto.getId();
     }
 

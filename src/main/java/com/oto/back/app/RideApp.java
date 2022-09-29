@@ -34,12 +34,12 @@ public class RideApp {
     }
 
     public ResponseDto<RideDto> add(RideDto rideDto) {
-        rideService.add(rideMapper.toEntity(rideDto));
-        return new ResponseDto<>(rideDto, 200, "ADDED");
+        var entity = rideService.add(rideMapper.toEntity(rideDto));
+        return new ResponseDto<>(rideMapper.toDto(entity), 200, "ADDED");
     }
 
     public ResponseDto<RideDto> update(String id, RideDto rideDto) {
-        rideService.update(id, rideMapper.toEntity(rideDto));
-        return new ResponseDto<>(rideDto, 200, "UPDATED");
+        var entity = rideService.update(id, rideMapper.toEntity(rideDto));
+        return new ResponseDto<>(rideMapper.toDto(entity), 200, "UPDATED");
     }
 }

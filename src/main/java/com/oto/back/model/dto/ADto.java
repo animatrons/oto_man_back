@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public abstract class ADto {
 
-    private String id;
+    private Integer id;
     abstract boolean validate();
     abstract boolean validate(String validationType);
 }

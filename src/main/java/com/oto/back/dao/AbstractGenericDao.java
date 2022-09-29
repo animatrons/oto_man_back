@@ -7,6 +7,7 @@ import com.oto.back.model.exception.BusinessException;
 import com.oto.back.model.exception.TechnicalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -36,14 +37,14 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
     }
 
     @Override
-    public Optional<T> find(String id) throws TechnicalException {
+    public Optional<T> find(Integer id) throws TechnicalException {
         try {
             if (id == null) {
                 throw new BusinessException("REQUIRED PARAMS ARE MISSING IN THIS QUERY");
             }
             var sql = "SELECT * FROM " + table + " WHERE id = ?;";
             AbstractRowMapper<? extends AEntity> rowMapper = RowMapperFactory.getRowMapper(table);
-            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper, Integer.parseInt(id))
+            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper, id)
                     .stream()
                     .findFirst();
         } catch (ClassNotFoundException e) {
@@ -85,9 +86,10 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
             }
             AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
             var sql = rowMapper.getParametrizedInsertQuery(entity);
-            Object[] args = rowMapper.getNonNullValueProperties(entity);
-            int[] types = rowMapper.getTypes(entity);
-            return jdbcTemplate.update(sql, args, types);
+            Object[] args = rowMapper.getNonNullMembersValues(entity);
+            int[] types = rowMapper.getNonNullMembersTypes(entity);
+            var i = jdbcTemplate.queryForObject(sql, args, types, Integer.class);
+            return i;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  ClassNotFoundException | NoSuchFieldException | InstantiationException e) {
             log.error(e.getMessage(), e);
@@ -96,13 +98,13 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
     }
 
     @Override
-    public int delete(String id) throws TechnicalException {
+    public int delete(Integer id) throws TechnicalException {
         try {
             if (id == null) {
                 throw new BusinessException("REQUIRED PARAMS ARE MISSING IN THIS QUERY");
             }
             var sql = "DELETE FROM " + table + " WHERE id = ?;";
-            return jdbcTemplate.update(sql, Integer.parseInt(id));
+            return jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
             log.error(e.getMessage(), e);
             throw new TechnicalException(e.getMessage());
@@ -110,13 +112,13 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
     }
 
     @Override
-    public int update(String id, T entity) throws TechnicalException {
+    public int update(Integer id, T entity) throws TechnicalException {
         try {
             if (id == null || entity == null) {
                 throw new BusinessException("REQUIRED PARAMS ARE MISSING IN THIS QUERY");
             }
             AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
-            var sql = rowMapper.getUpdateQuery(id, entity);
+            var sql = rowMapper.getUpdateQuery(id.toString(), entity);
             return jdbcTemplate.update(sql);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  ClassNotFoundException e) {

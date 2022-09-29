@@ -27,7 +27,7 @@ public abstract class AbstractGenericService<T extends AEntity, U extends IGener
     public T get(String id) {
         try {
             String table = dao.getTableName();
-            return dao.find(id).orElseThrow(() -> new NotFoundException(String.format("%s with id %s not found", table, id)));
+            return dao.find(Integer.parseInt(id)).orElseThrow(() -> new NotFoundException(String.format("%s with id %s not found", table, id)));
         } catch (TechnicalException e) {
             throw new InternalServerException(e.getMessage());
         }
@@ -43,18 +43,22 @@ public abstract class AbstractGenericService<T extends AEntity, U extends IGener
     }
 
     @Override
-    public void add(T entity) {
+    public T add(T entity) {
         try {
-            dao.insert(entity);
+            var id = dao.insert(entity);
+            entity.setId(id);
+            return entity;
         } catch (TechnicalException e) {
             throw new InternalServerException(e.getMessage());
         }
     }
 
     @Override
-    public void update(String id, T entity) {
+    public T update(String id, T entity) {
         try {
-            dao.update(id, entity);
+            dao.update(Integer.parseInt(id), entity);
+            entity.setId(Integer.parseInt(id));
+            return entity;
         } catch (TechnicalException e) {
             throw new InternalServerException(e.getMessage());
         }
@@ -63,7 +67,7 @@ public abstract class AbstractGenericService<T extends AEntity, U extends IGener
     @Override
     public void delete(String id) {
         try {
-            dao.delete(id);
+            dao.delete(Integer.parseInt(id));
         } catch (TechnicalException e) {
             throw new InternalServerException(e.getMessage());
         }

@@ -37,13 +37,13 @@ public class AutoApp {
     }
 
     public ResponseDto<AutoDto> add(AutoDto autoDto) {
-        var auto = autoMapper.toEntity(autoDto);
-        return new ResponseDto<>(autoDto, 200, "ADDED");
+        var entity = autoMapper.toEntity(autoDto);
+        return new ResponseDto<>(autoMapper.toDto(entity), 200, "ADDED");
     }
 
     public ResponseDto<AutoDto> update(String id, AutoDto autoDto) {
-        autoService.update(id, autoMapper.toEntity(autoDto));
-        return new ResponseDto<>(null, 200, "DELETED");
+        var entity = autoService.update(id, autoMapper.toEntity(autoDto));
+        return new ResponseDto<>(autoMapper.toDto(entity), 200, "DELETED");
     }
 
     /**
@@ -53,8 +53,8 @@ public class AutoApp {
      * @param id id
      * @return dto
      */
-    public AutoDto getDtoForMapper(String id) {
-        Auto auto = autoService.get(id);
+    public AutoDto getDtoForMapper(Integer id) {
+        Auto auto = autoService.get(id.toString());
         return autoMapper.toDto(auto);
     }
 }

@@ -4,6 +4,7 @@ import com.oto.back.app.UserApp;
 import com.oto.back.model.dto.ResponseDto;
 import com.oto.back.model.dto.RiderDto;
 import com.oto.back.model.dto.UserDto;
+import com.oto.back.model.dto.UserOutputDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,32 +19,32 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseDto<List<UserDto>> getAll() {
+    public ResponseDto<List<UserOutputDto>> getAll() {
         return userApp.getAll();
     }
 
     @GetMapping("{id}")
-    public ResponseDto<UserDto> get(@PathVariable("id") String id) {
+    public ResponseDto<UserOutputDto> get(@PathVariable("id") String id) {
         return userApp.get(id);
     }
 
     @GetMapping("user")
-    public ResponseDto<UserDto> getBy(@RequestParam("email") String email) {
+    public ResponseDto<UserOutputDto> getBy(@RequestParam("email") String email) {
         return userApp.getByEmailAddress(email);
     }
 
     @PostMapping
-    public ResponseDto<UserDto> add(@RequestBody UserDto userDto) {
+    public ResponseDto<UserOutputDto> add(@RequestBody UserDto userDto) {
         return userApp.add(userDto);
     }
 
     @DeleteMapping("{id}")
-    public ResponseDto<UserDto> delete(@PathVariable("id") String id) {
+    public ResponseDto<UserOutputDto> delete(@PathVariable("id") String id) {
         return userApp.delete(id);
     }
 
     @PutMapping
-    public ResponseDto<UserDto> update(@RequestParam("id") String id, @RequestBody UserDto userDto) {
+    public ResponseDto<UserOutputDto> update(@RequestParam("id") String id, @RequestBody UserDto userDto) {
         return userApp.update(id, userDto);
     }
 

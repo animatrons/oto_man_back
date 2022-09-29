@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface IGenericDao<T extends AEntity> {
 
-    Optional<T> find(String id) throws TechnicalException;
+    Optional<T> find(Integer id) throws TechnicalException;
     List<T> findAll() throws TechnicalException;
     List<T> findBy(String column, Object value) throws TechnicalException;
     int insert(T entity) throws TechnicalException;
-    int delete(String id) throws TechnicalException;
-    int update(String id, T entity) throws TechnicalException;
+    int delete(Integer id) throws TechnicalException;
+    int update(Integer id, T entity) throws TechnicalException;
     String getTableName() throws TechnicalException;
 }

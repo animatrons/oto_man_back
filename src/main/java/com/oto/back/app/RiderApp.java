@@ -34,13 +34,13 @@ public class RiderApp {
     }
 
     public ResponseDto<RiderDto> add(RiderDto riderDto) {
-        riderService.add(riderMapper.toEntity(riderDto));
-        return new ResponseDto<>(riderDto, 200, "ADDED");
+        var entity = riderService.add(riderMapper.toEntity(riderDto));
+        return new ResponseDto<>(riderMapper.toDto(entity), 200, "ADDED");
     }
 
     public ResponseDto<RiderDto> update(String id, RiderDto riderDto) {
-        riderService.update(id, riderMapper.toEntity(riderDto));
-        return new ResponseDto<>(riderDto, 200, "UPDATED");
+        var entity = riderService.update(id, riderMapper.toEntity(riderDto));
+        return new ResponseDto<>(riderMapper.toDto(entity), 200, "UPDATED");
     }
 
     /**
@@ -50,8 +50,8 @@ public class RiderApp {
      * @param id id
      * @return dto
      */
-    public RiderDto getDtoForMapper(String id) {
-        Rider rider = riderService.get(id);
+    public RiderDto getDtoForMapper(Integer id) {
+        Rider rider = riderService.get(id.toString());
         return riderMapper.toDto(rider);
     }
 }
