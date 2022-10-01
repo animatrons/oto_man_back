@@ -1,5 +1,6 @@
 package com.oto.back.dao.mapper;
 
+import com.google.common.collect.Sets;
 import com.oto.back.dao.util.ArraySqlValue;
 import com.oto.back.model.AEntity;
 
@@ -202,10 +203,28 @@ public abstract class AbstractRowMapper<T extends AEntity> {
                 instance.getClass().getMethod(setter, Float.class).invoke(instance, rs.getFloat(name));
             } else
             if (typeName.equals(List.class.getCanonicalName())) {
-                instance.getClass().getMethod(setter, List.class).invoke(instance, Collections.singletonList(rs.getArray(name)));
+                int baseType = rs.getArray(name).getBaseType();
+                if (baseType == Types.VARCHAR || baseType == Types.NCHAR || baseType == Types.LONGNVARCHAR || baseType == Types.LONGVARCHAR || baseType == Types.NVARCHAR || baseType == Types.CHAR) {
+                    String[] arr = (String[]) rs.getArray(name).getArray();
+                    instance.getClass().getMethod(setter, List.class).invoke(instance, Arrays.asList(arr));
+                } else if (baseType == Types.INTEGER || baseType == Types.BIGINT || baseType == Types.SMALLINT || baseType == Types.TINYINT) {
+                    Integer[] arr = (Integer[]) rs.getArray(name).getArray();
+                    instance.getClass().getMethod(setter, List.class).invoke(instance, Arrays.asList(arr));
+                } else {
+                    throw new NoSuchFieldException("[[ OH NO ]] The field cannot be mapped to a List because it's member's type is not supported");
+                }
             } else
             if (typeName.equals(Set.class.getCanonicalName())) {
-                instance.getClass().getMethod(setter, Set.class).invoke(instance, new HashSet<>(Collections.singletonList(rs.getArray(name))));
+                int baseType = rs.getArray(name).getBaseType();
+                if (baseType == Types.VARCHAR || baseType == Types.NCHAR || baseType == Types.LONGNVARCHAR || baseType == Types.LONGVARCHAR || baseType == Types.NVARCHAR || baseType == Types.CHAR) {
+                    String[] arr = (String[]) rs.getArray(name).getArray();
+                    instance.getClass().getMethod(setter, Set.class).invoke(instance, Sets.newHashSet(arr));
+                } else if (baseType == Types.INTEGER || baseType == Types.BIGINT || baseType == Types.SMALLINT || baseType == Types.TINYINT) {
+                    Integer[] arr = (Integer[]) rs.getArray(name).getArray();
+                    instance.getClass().getMethod(setter, Set.class).invoke(instance, Sets.newHashSet(arr));
+                } else {
+                    throw new NoSuchFieldException("[[ OH NO ]] The field cannot be mapped to a Set because it's member's type is not supported");
+                }
             } else {
                 throw new NoSuchFieldException("[[ OH NO ]] this field cannot be mapped because it's type is not supported, filed is: " + name + " type: " + typeName);
             }

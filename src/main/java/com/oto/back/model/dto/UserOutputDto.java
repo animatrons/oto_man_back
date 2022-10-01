@@ -5,17 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOutputDto extends ADto {
 
-    private String userName;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
-    private String[] role;
+    private Set<String> role;
 
     @Override
     boolean validate() {

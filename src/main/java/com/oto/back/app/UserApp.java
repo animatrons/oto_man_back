@@ -37,6 +37,29 @@ public class UserApp {
         return new ResponseDto<>(dto, 200, "OK");
     }
 
+    public ResponseDto<UserOutputDto> getByUserName(String userName) {
+        UserOutputDto dto = userService.getBy("userName", userName)
+                .stream()
+                .findFirst()
+                .map(user -> outputMapper.toDto(user))
+                .orElseThrow(() -> new NotFoundException(String.format("User with userName '%s' NOT found, OK?", userName)));
+        return new ResponseDto<>(dto, 200, "OK");
+    }
+
+    public User getUserByUsername(String userName) {
+        return userService.getBy("userName", userName)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("User with userName '%s' NOT found, OK?", userName)));
+    }
+
+    public User getUserByEmail(String email) {
+        return userService.getBy("email", email)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("User with email '%s' NOT found, OK?", email)));
+    }
+
     public ResponseDto<UserOutputDto> delete(String id) {
         userService.delete(id);
         return new ResponseDto<>(null, 200, "DELETED");

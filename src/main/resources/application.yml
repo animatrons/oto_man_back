@@ -11,3 +11,7 @@ server:
   error:
     include-binding-errors: always
     include-message: always
+
+jwt:
+  expiration: 3600000
+  secret: secret_DAEN4D5T44FS6DF89AF

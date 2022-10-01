@@ -4,15 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends AEntity {
+public class User extends AEntity implements UserDetails {
     @Override
     public String getTableName() {
         return "user_";
@@ -23,40 +27,44 @@ public class User extends AEntity {
         return "";
     }
 
-    private String userName;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private Set<String> role;
 
-    /*@Override
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (var r: this.role) {
+            authorities.add(new SimpleGrantedAuthority(r));
+        }
+        return authorities;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
-    }*/
+        return true;
+    }
 }
