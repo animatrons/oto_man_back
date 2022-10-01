@@ -34,6 +34,17 @@ public abstract class AbstractGenericService<T extends AEntity, U extends IGener
     }
 
     @Override
+    public T getOneBy(String property, Object value) throws NotFoundException {
+        try {
+            String table = dao.getTableName();
+            return dao.findOneBy(property, value)
+                    .orElseThrow(() -> new NotFoundException(String.format("%s not found", table)));
+        } catch (TechnicalException e) {
+            throw new InternalServerException(e.getMessage());
+        }
+    }
+
+    @Override
     public List<T> getAll() {
         try {
             return dao.findAll();

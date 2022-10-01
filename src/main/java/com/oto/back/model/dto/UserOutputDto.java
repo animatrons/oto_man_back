@@ -20,12 +20,12 @@ public class UserOutputDto extends ADto {
     private Set<String> role;
 
     @Override
-    boolean validate() {
+    public boolean validate() {
         return true;
     }
 
     @Override
-    boolean validate(String validationType) {
+    public boolean validate(String validationType) {
         return true;
     }
 }

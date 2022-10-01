@@ -30,7 +30,6 @@ public class BasicJwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        super.doFilterInternal(request, response, chain);
         UsernamePasswordAuthenticationToken auth = getAuthentication(request);
         if (auth == null) {
             chain.doFilter(request, response);

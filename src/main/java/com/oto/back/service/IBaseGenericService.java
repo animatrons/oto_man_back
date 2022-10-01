@@ -10,6 +10,7 @@ public interface IBaseGenericService<T extends AEntity> {
     T get(String id);
     List<T> getAll();
     List<T> getBy(String property, Object value);
+    T getOneBy(String property, Object value);
     T add(T entity);
     T update(String id, T entity);
     void delete(String id);

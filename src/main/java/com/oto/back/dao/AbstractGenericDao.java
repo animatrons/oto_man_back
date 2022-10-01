@@ -79,6 +79,21 @@ public abstract class AbstractGenericDao<T extends AEntity> implements IGenericD
     }
 
     @Override
+    public Optional<T> findOneBy(String column, Object value) throws TechnicalException {
+        try {
+            value = value instanceof String ? "'" + value + "'" : Optional.ofNullable(value).orElse("''");
+            var sql = "SELECT * FROM " + table + " WHERE " + column + " = " + value + ";";
+            AbstractRowMapper rowMapper = RowMapperFactory.getRowMapper(table);
+            return jdbcTemplate.query(sql, (RowMapper<T>) rowMapper)
+                    .stream()
+                    .findFirst();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new TechnicalException(e.getMessage());
+        }
+    }
+
+    @Override
     public int insert(T entity) throws TechnicalException {
         try {
             if (entity == null) {

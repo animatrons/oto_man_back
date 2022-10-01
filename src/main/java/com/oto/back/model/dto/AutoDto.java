@@ -15,11 +15,11 @@ public class AutoDto extends ADto {
     private Long mileage;
 
     @Override
-    boolean validate() {
+    public boolean validate() {
         return false;
     }
     @Override
-    boolean validate(String validationType) {
+    public boolean validate(String validationType) {
         return false;
     }
 }

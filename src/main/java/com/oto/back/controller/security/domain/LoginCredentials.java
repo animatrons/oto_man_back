@@ -1,4 +1,4 @@
-package com.oto.back.model.dto;
+package com.oto.back.controller.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

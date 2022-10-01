@@ -1,7 +1,7 @@
 package com.oto.back.controller.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oto.back.model.dto.LoginCredentials;
+import com.oto.back.controller.security.domain.LoginCredentials;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

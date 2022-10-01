@@ -1,6 +1,8 @@
 package com.oto.back.app;
 
+import com.oto.back.app.mapper.UserCredentialsMapperImpl;
 import com.oto.back.app.mapper.UserOutputMapperImpl;
+import com.oto.back.controller.security.domain.RegisterCredentials;
 import com.oto.back.model.User;
 import com.oto.back.model.dto.ResponseDto;
 import com.oto.back.model.dto.UserDto;
@@ -8,6 +10,8 @@ import com.oto.back.app.mapper.UserMapperImpl;
 import com.oto.back.model.dto.UserOutputDto;
 import com.oto.back.model.exception.NotFoundException;
 import com.oto.back.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +20,13 @@ import java.util.List;
 public class UserApp {
 
     private final IUserService userService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     public UserApp(IUserService userService) {
         this.userService = userService;
     }
     UserMapperImpl userMapper = new UserMapperImpl();
-
+    UserCredentialsMapperImpl userCredentialsMapper = new UserCredentialsMapperImpl();
     UserOutputMapperImpl outputMapper = new UserOutputMapperImpl();
 
     public ResponseDto<UserOutputDto> get(String id) {
@@ -78,5 +84,21 @@ public class UserApp {
     public ResponseDto<UserOutputDto> update(String id, UserDto userDto) {
         User updatedUser = userService.update(id, userMapper.toEntity(userDto));
         return new ResponseDto<>(outputMapper.toDto(updatedUser), 200, "UPDATED");
+    }
+
+    public boolean userExists(String email) {
+        try {
+            User usr = userService.getOneBy("email", email);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+
+    public ResponseDto<UserOutputDto> register(RegisterCredentials credentials) {
+        credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
+        User user = userCredentialsMapper.toEntity(credentials);
+        user = userService.add(user);
+        return new ResponseDto<>(outputMapper.toDto(user), 200, "REGISTERED");
     }
 }

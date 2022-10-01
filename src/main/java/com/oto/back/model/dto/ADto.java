@@ -8,6 +8,6 @@ import lombok.Setter;
 public abstract class ADto {
 
     private Integer id;
-    abstract boolean validate();
-    abstract boolean validate(String validationType);
+    public abstract boolean validate();
+    public abstract boolean validate(String validationType);
 }
