@@ -22,7 +22,7 @@ public class AuthController {
         this.userApp = userApp;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/api/users/new")
     public ResponseDto<UserOutputDto> register(@RequestBody RegisterCredentials credentials, HttpServletRequest request) {
         if (userApp.userExists(credentials.getEmail())) {
             throw new DataIntegrityViolationException("User with creds exists");
@@ -30,7 +30,7 @@ public class AuthController {
         return userApp.register(credentials);
     }
 
-    @PostMapping("/auth/api/user/edit")
+    @PostMapping("/auth/api/users/edit")
     public ResponseDto<UserOutputDto> edit(@RequestParam("id") String id, @RequestBody UserDto user) {
         if (!userApp.userExists(user.getEmail())) {
             throw new DataIntegrityViolationException("User with creds exists");

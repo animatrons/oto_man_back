@@ -49,7 +49,7 @@ public class SecurityConfig {
                                  .antMatchers(HttpMethod.POST, "/auth/api/autos", "/auth/api/riders").hasRole(Role.ADMIN.name())
                                  .antMatchers(HttpMethod.PUT, "/auth/api/autos", "/auth/api/riders").hasRole(Role.ADMIN.name())
                                  .antMatchers(HttpMethod.DELETE, "/auth/api/autos", "/auth/api/riders").hasRole(Role.ADMIN.name())
-                                 .antMatchers("/auth/api/users").hasRole(Role.SUPER.name())
+                                 .antMatchers("/auth/api/users", "/auth/api/users/**").hasRole(Role.SUPER.name())
                                  .antMatchers("/auth/api/rides").hasRole(Role.ADMIN.name())
                                 .anyRequest().permitAll()
                                 .and()
