@@ -1,5 +1,6 @@
-package com.oto.back.app;
+package com.oto.back.controller.security;
 
+import com.oto.back.app.UserApp;
 import com.oto.back.model.User;
 import com.oto.back.model.dto.UserDto;
 import lombok.RequiredArgsConstructor;

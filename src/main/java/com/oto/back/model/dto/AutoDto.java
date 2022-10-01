@@ -14,6 +14,7 @@ public class AutoDto extends ADto {
     private String vtype;
     private Long mileage;
 
+    private Long pricePerHour;
     @Override
     public boolean validate() {
         return false;

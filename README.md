@@ -28,3 +28,28 @@ UP the docker compose file again:
 - Remove the postgres volume: `docker rm <VOLUME NAME>`
 - Restart container: `docker-compose up`
 - Access the psql in terminal: `psql -h 0.0.0.0 -p <port> -U <user>` and enter password
+
+# TABLE CREATION COMMANDS SCRIPT:
+```
+ CREATE TABLE rider (id BIGSERIAL, 
+    firstname VARCHAR, 
+    lastName VARCHAR, 
+    email VARCHAR, 
+    phone VARCHAR, 
+    birthDate TIMESTAMP WITH TIME ZONE, 
+    PRIMARY KEY(id));
+```
+```
+ CREATE TABLE ride (id BIGSERIAL, 
+    start TIMESTAMP WITH TIME ZONE, 
+    checkin TIMESTAMP WITH TIME ZONE, 
+    riderid INT, 
+    autoid INT, comment VARCHAR, 
+    PRIMARY KEY(id), 
+    CONSTRAINT fk_rider 
+      FOREIGN KEY(riderid) 
+        REFERENCES rider(id), 
+    CONSTRAINT fk_auto 
+      FOREIGN KEY(autoid) 
+        REFERENCES auto(id));
+```

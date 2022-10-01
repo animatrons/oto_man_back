@@ -1,7 +1,6 @@
 package com.oto.back.controller.security.config;
 
-import com.oto.back.app.AuthUserDetailsService;
-import com.oto.back.app.UserApp;
+import com.oto.back.controller.security.AuthUserDetailsService;
 import com.oto.back.controller.security.AuthSuccessHandler;
 import com.oto.back.controller.security.filter.BasicJwtAuthenticationFilter;
 import com.oto.back.controller.security.filter.UsernamePasswordJwtAuthenticationFilter;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;

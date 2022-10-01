@@ -3,6 +3,10 @@ package com.oto.back.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Getter
@@ -12,7 +16,7 @@ public class RiderDto extends ADto {
     private String lastName;
     private String email;
     private String phone;
-    private Date birthDate;
+    private OffsetDateTime birthDate;
 
     @Override
     public boolean validate() {

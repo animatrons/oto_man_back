@@ -28,4 +28,6 @@ public class Auto extends AEntity {
     private String vclass;
     private String vtype;
     private Long mileage;
+
+    private Long pricePerHour;
 }

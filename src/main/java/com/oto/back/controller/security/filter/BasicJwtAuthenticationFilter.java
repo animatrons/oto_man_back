@@ -2,7 +2,7 @@ package com.oto.back.controller.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.oto.back.app.AuthUserDetailsService;
+import com.oto.back.controller.security.AuthUserDetailsService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -10,6 +10,10 @@ import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public abstract class AbstractRowMapper<T extends AEntity> {
@@ -88,6 +92,9 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             if (value instanceof String) {
                 value = "'" + value + "'";
             }
+            if (value instanceof Date || value instanceof LocalDate || value instanceof LocalDateTime || value instanceof ZonedDateTime || value instanceof OffsetDateTime) {
+                value = "'" + value + "'";
+            }
             if (value instanceof List<?> || value instanceof Set<?>) {
                 StringBuilder arrStr = new StringBuilder();
                 arrStr.append("ARRAY [");
@@ -123,10 +130,13 @@ public abstract class AbstractRowMapper<T extends AEntity> {
         for (Map.Entry<String, Object> keyValue: entrySet) {
             var v = keyValue.getValue();
             var k = keyValue.getKey();
+/*            if (v instanceof Date || v instanceof LocalDate || v instanceof LocalDateTime || v instanceof ZonedDateTime) {
+                v = v.toString();
+            } else*/
             if (v instanceof List<?>) {
                 Class<?> aClass = getGenericTypeOfField(k);
                 v = ArraySqlValue.create(((List<?>) v).toArray(), aClass);
-            }
+            } else
             if (v instanceof Set<?>) {
                 Class<?> aClass = getGenericTypeOfField(k);
                 v = ArraySqlValue.create(((Set<?>) v).toArray(), aClass);
@@ -157,7 +167,11 @@ public abstract class AbstractRowMapper<T extends AEntity> {
             if (v instanceof Boolean) {
                 types.add(Types.BOOLEAN);
             } else
-            if (v instanceof Date) {
+                // https://tada.github.io/pljava/use/datetime.html
+/*            if (v instanceof Date || v instanceof LocalDate || v instanceof LocalDateTime || v instanceof ZonedDateTime) {
+                types.add(Types.TIMESTAMP_WITH_TIMEZONE);
+            } else*/
+            if (v instanceof OffsetDateTime) {
                 types.add(Types.TIMESTAMP_WITH_TIMEZONE);
             } else
             if (v instanceof List<?> || v instanceof Set<?>) {

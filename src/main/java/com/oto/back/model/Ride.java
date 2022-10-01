@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Getter
@@ -22,8 +25,8 @@ public class Ride extends AEntity {
         return "";
     }
 
-    private Date start;
-    private Date checkIn;
+    private OffsetDateTime start;
+    private OffsetDateTime checkIn;
     private Integer riderId; // foreign key of Rider table
     private Integer autoId; // foreign key of Auto table
     private String comment;
